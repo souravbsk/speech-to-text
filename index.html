@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text to Speech</title>
+  </head>
+  <body>
+    <h1 id="text"></h1>
+    <script>
+      let element = document.getElementById("text");
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-GB";
+      recognition.continuous = true;
+
+      // Start recognition on click
+      document.onclick = () => recognition.start();
+
+      recognition.onresult = (event) => {
+        // Iterate over each speech result
+        for (let i = 0; i < event.results.length; i++) {
+          const result = event.results[i];
+          // Update the innerText with the transcript of the recognized speech
+          element.innerText = result[0].transcript;
+        }
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Error occurred in speech recognition: " + event.error);
+      };
+    </script>
+  </body>
+</html>
