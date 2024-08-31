@@ -10,13 +10,12 @@
       let element = document.getElementById("text");
       const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
       recognition.lang = "en-GB";
-      recognition.continuous = true;
+      recognition.continuous = false; // Set to false to trigger the 'onend' event after each speech
 
       // Function to start recognition
       function startRecognition() {
         recognition.start();
         element.innerText = "Listening..."; // Indicate listening status
-        document.onclick = null; // Remove the click handler to prevent repeated calls
       }
 
       // Set click handler to start recognition
@@ -34,6 +33,11 @@
       recognition.onerror = (event) => {
         console.error("Error occurred in speech recognition: " + event.error);
         element.innerText = "Error: " + event.error;
+      };
+
+      // Automatically restart recognition after the user stops speaking
+      recognition.onend = () => {
+        recognition.start();
       };
     </script>
   </body>
